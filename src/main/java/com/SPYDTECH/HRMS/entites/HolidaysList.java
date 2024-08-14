@@ -20,6 +20,6 @@ public class HolidaysList {
     private Long id;
 
     private String day;
-    private String date;
+    private LocalDate date;
     private String holidayName;
 }
