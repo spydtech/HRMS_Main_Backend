@@ -97,11 +97,11 @@ public class AppConfig {
         return request -> {
             CorsConfiguration cfg = new CorsConfiguration();
             cfg.setAllowedOrigins(Arrays.asList(
-                    "http://3.111.147.73:3000",
-                    "http://3.111.147.73:3001",
+                    "http://13.234.49.187:3000",
+                    "http://13.234.49.187:3001",
                     "http://localhost:5174",
-                    "http://3.111.147.73:8080",
-                    "http://3.111.147.73:5173"
+                    "http://13.234.49.187:8080",
+                    "http://13.234.49.187:5173"
             ));
             cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             cfg.setAllowCredentials(true);

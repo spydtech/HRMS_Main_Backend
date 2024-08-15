@@ -1,22 +1,26 @@
 package com.SPYDTECH.HRMS.dto;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalTime;
+
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class AttendanceReport {
-
-    private String employee_name;
-    private String employee_id;
-    private long attended;
-    private long week_off;
+    private String employeeName;
+    private String employeeId;
+    private long attendedDays;
+    private long weeklyOffs;
     private long holidays;
-    private double time_off;
-    private double over_time;
-    private long loss_of_pay;
-    private double late_count;
-    private double early_count;
-
+    private long timeOff;
+    private long overTime;
+    private long lop;
+    private long lateCount;
+    private long earlyCount;
 
 }

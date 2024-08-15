@@ -27,12 +27,15 @@ public class Attendance {
 
     private LocalDateTime punchOut;
 
-    private int productionHours;
-    private int productionMinutes;
-    private int productionSeconds;
-    private int breakHours;
-    private int breakMinutes;
-    private int breakSeconds;
-    private int overtime;
+    private long productionHours;
+    private long productionMinutes;
+    private long productionSeconds;
+    private long breakHours;
+    private long breakMinutes;
+    private long breakSeconds;
+    private long overtime;
+
+
+
 
 }
