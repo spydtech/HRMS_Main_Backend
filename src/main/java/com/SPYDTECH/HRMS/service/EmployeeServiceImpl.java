@@ -117,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if(employee.isPresent()){
             Employee employee1=employee.get();
             if(passwordChange.getNewPassword().equals(passwordChange.getConfirmPassword())){
-                if(passwordEncoder.matches(passwordChange.getOldPassword(), employee1.getPassword())){
+                if(passwordEncoder.matches(passwordChange.getNewPassword(), employee1.getPassword())){
                     employee1.setPassword(passwordEncoder.encode(passwordChange.getNewPassword()));
                     employeeRepository.save(employee1);
                     return "password updated successfully";

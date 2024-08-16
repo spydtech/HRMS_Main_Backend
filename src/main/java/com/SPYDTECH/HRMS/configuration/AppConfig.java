@@ -100,6 +100,7 @@ public class AppConfig {
                     "http://13.234.49.187:3000",
                     "http://13.234.49.187:3001",
                     "http://localhost:5174",
+                    "http://localhost:5173",
                     "http://13.234.49.187:8080",
                     "http://13.234.49.187:5173"
             ));
