@@ -89,6 +89,13 @@ public class EmployeeServiceImpl implements EmployeeService{
         employee.setPhoneNumber(employeeDetails.getPhoneNumber());
         employee.setRole(employeeDetails.getRole());
         employee.setJoinDate(employeeDetails.getJoinDate());
+        employee.setAadharCardNumber(employeeDetails.getAadharCardNumber());
+        employee.setBloodGroup(employeeDetails.getBloodGroup());
+        employee.setDob(employeeDetails.getDob());
+        employee.setDesignation(employeeDetails.getDesignation());
+        employee.setPersonalEmail(employeeDetails.getPersonalEmail());
+        employee.setEmployeeId(employeeDetails.getEmployeeId());
+        employee.setPanNumber(employeeDetails.getPanNumber());
 
         return employeeRepository.save(employee);
     }
