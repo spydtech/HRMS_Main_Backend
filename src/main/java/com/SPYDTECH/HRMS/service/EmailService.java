@@ -49,7 +49,7 @@ public class EmailService {
         helper.setText("Dear Canidate "+employee.getFirstName()+" "+employee.getLastName()+",\n" +
                 "We’re excited to inform you that your access to the HR Portal has been successfully set up. You can now log in to manage your personal information, benefits, and more.\n" +
                 "Your Login Credentials:\n" +
-                "Username:  " +employeeId+"\n"+
+                "Username:  " +toEmail+"\n"+
                 "Temporary Password: "+password+"\n" +
                 "\n" +
                 "How to Log In:\n" +
