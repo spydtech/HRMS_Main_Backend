@@ -45,18 +45,19 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(toEmail);
         helper.setSubject("Welcome! Your HR Portal Access Has Been Set Up");
-        helper.setText("Dear " + employee.getFirstName() + " " + employee.getLastName() + ",\n" +
-                "We’re excited to inform you that your access to the HR Portal has been successfully set up. You can now log in to manage your personal information, benefits, and more.\n" +
-                "\nYour Login Credentials:\n" +
-                "Username: " + toEmail + "\n" +
-                "Temporary Password: " + password + "\n" +
-                "\nHow to Log In:\n" +
-                "Visit the HR Portal: http://13.234.49.187:5173/\n" +
-                "Enter Your Username and Temporary Password: Use the credentials listed above.\n" +
-                "Change Your Password: After logging in, you will be prompted to change your temporary password. Please create a new, secure password that you’ll remember.\n" +
-                "Update Your Profile: Once logged in, please review and update your profile information as needed.\n" +
-                "If you have any questions or run into any issues, don’t hesitate to reach out to our HR team at mounika@spydtech.com.");
+        String emailContent = "<p>Dear " + employee.getFirstName() + " " + employee.getLastName() + ",</p>" +
+                "<p>We’re excited to inform you that your access to the HR Portal has been successfully set up. You can now log in to manage your personal information, benefits, and more.</p>" +
+                "<p><b>Your Login Credentials:</b></p>" +
+                "<p>Username: " + toEmail + "<br>" +
+                "Temporary Password: " + password + "</p>" +
+                "<p><b>How to Log In:</b></p>" +
+                "<p><b>Enter Your Username and Temporary Password:</b> Use the credentials listed above.</p>" +
+                "<p>Visit the HR Portal: <a href='http://13.234.49.187:5173/'>http://13.234.49.187:5173/</a></p>" +
+                "<p>Change Your Password: After logging in, you will be prompted to change your temporary password. Please create a new, secure password that you’ll remember.</p>" +
+                "<p>Update Your Profile: Once logged in, please review and update your profile information as needed.</p>" +
+                "<p>If you have any questions or run into any issues, don’t hesitate to reach out to our HR team at hr@spydtech.com.</p>";
 
+        helper.setText(emailContent, true);
         mailSender.send(message);
 
     }
