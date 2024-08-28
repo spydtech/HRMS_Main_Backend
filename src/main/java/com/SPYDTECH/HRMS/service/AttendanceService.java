@@ -63,8 +63,6 @@ public class AttendanceService {
         if(hours>9){
             attendance.setOvertime(hours-9);
         }
-
-
         return attendanceRepository.save(attendance);
     }
 

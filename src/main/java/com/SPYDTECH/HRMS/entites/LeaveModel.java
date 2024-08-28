@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -20,29 +21,17 @@ public class LeaveModel {
     @Enumerated(EnumType.STRING)
     private LeaveType leaveType;
 
-    private LocalDate startDate;
+    private Date startDate;
 
     @Enumerated(EnumType.STRING)
-    private SelectHalf startDateSelectHalf;
+    private SelectHalf selectHalf;
 
-    private LocalDate endDate;
+    private Date endDate;
 
-    @Enumerated(EnumType.STRING)
-    private SelectHalf endDateSelectHalf;
+    private int noOfDays;
 
     private String reason;
 
     private String employeeId;
-
-
-
-
-
-
-
-
-
-
-
 
 }

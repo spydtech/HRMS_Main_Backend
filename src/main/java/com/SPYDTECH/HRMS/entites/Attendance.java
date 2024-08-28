@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+
 
 @Data
 @Entity
@@ -25,7 +25,7 @@ public class Attendance {
 
     private LocalDateTime punchIn;
 
-    private LocalDateTime punchOut;
+    private  LocalDateTime punchOut;
 
     private long productionHours;
     private long productionMinutes;
@@ -34,6 +34,10 @@ public class Attendance {
     private long breakMinutes;
     private long breakSeconds;
     private long overtime;
+
+    private long workingHours;
+    private long workingMinutes;
+    private long workingSeconds;
 
 
 

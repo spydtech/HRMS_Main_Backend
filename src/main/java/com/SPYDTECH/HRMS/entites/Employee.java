@@ -43,6 +43,11 @@ public class Employee {
     private String confirmPassword;
 
     private String role;
+
+    private String currentAddress;
+    private String permanentAddress;
+    private String alternatePhoneNumber;
+
     @JsonIgnore
     @OneToMany(mappedBy = "orderBy")
     private List<Expense> expenses;

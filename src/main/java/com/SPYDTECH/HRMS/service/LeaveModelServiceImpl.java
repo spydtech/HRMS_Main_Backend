@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,8 +31,7 @@ public class LeaveModelServiceImpl  implements  LeaveModelService{
         leave.setEndDate(leaveModel.getEndDate());
         leave.setStartDate(leaveModel.getStartDate());
         leave.setReason(leaveModel.getReason());
-        leave.setStartDateSelectHalf(leaveModel.getStartDateSelectHalf());
-        leave.setEndDateSelectHalf(leaveModel.getEndDateSelectHalf());
+        leave.setSelectHalf(leaveModel.getSelectHalf());
         leave.setEmployeeId(leaveModel.getEmployeeId());
         return leaveRepository.save(leave);
     }
@@ -40,13 +40,13 @@ public class LeaveModelServiceImpl  implements  LeaveModelService{
         long lossOfPay=0;
         List<LeaveModel> leaveModelList=leaveRepository.findByEmployeeId(employeeId);
         for(LeaveModel leaveModel:leaveModelList){
-            if((leaveModel.getStartDate().getMonthValue()==month && leaveModel.getStartDate().getYear()==year )||(leaveModel.getEndDate().getMonthValue()==month && leaveModel.getEndDate().getYear()==year )){
+            if((leaveModel.getStartDate().getMonth()==month && leaveModel.getStartDate().getYear()==year )||(leaveModel.getEndDate().getMonth()==month && leaveModel.getEndDate().getYear()==year )){
 
                 if(leaveModel.getLeaveType().name().equals("EARNEDLEAVE")){
                     if(leaveModel.getStartDate().equals(leaveModel.getEndDate())){
                         lossOfPay+=1;
                     }else{
-                        Long days=ChronoUnit.DAYS.between(leaveModel.getStartDate(),leaveModel.getEndDate());
+                        Long days=ChronoUnit.DAYS.between((Temporal) leaveModel.getStartDate(), (Temporal) leaveModel.getEndDate());
                         lossOfPay+=days;
 
                     }
