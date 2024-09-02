@@ -52,4 +52,8 @@ public class Employee {
     @OneToMany(mappedBy = "orderBy")
     private List<Expense> expenses;
 
+    private String drivingLicenseNumber;
+
+    private String passportNumber;
+
 }

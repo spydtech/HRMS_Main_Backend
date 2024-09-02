@@ -39,7 +39,7 @@ public class DataInitializationComponent implements CommandLineRunner {
     }
 
     private void initializeAdminUser() {
-        String adminUsername = "mounika@spydtech.com";
+        String adminUsername = "hr@spydtech.com";
 
         try {
             if (userRepository.findByEmail(adminUsername) == null) {

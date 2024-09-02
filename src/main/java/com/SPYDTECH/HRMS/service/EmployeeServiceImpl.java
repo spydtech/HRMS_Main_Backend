@@ -1,17 +1,25 @@
 package com.SPYDTECH.HRMS.service;
 
 import com.SPYDTECH.HRMS.configuration.JwtTokenProvider;
+import com.SPYDTECH.HRMS.entites.AadharProof;
 import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.PasswordChange;
 import com.SPYDTECH.HRMS.exceptions.UserException;
+import com.SPYDTECH.HRMS.repository.AadharProofRepository;
 import com.SPYDTECH.HRMS.repository.EmployeeRepository;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.SPYDTECH.HRMS.entites.IdType.*;
+import static com.SPYDTECH.HRMS.entites.IdType.PASSPORT;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -26,6 +34,11 @@ public class EmployeeServiceImpl implements EmployeeService{
     private EmailService emailService;
     @Autowired
     private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private AadharProofService aadharProofService;
+    @Autowired
+    private AadharProofRepository aadharProofRepository;
+
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, BCryptPasswordEncoder passwordEncoder, EmployeeActivityService employeeActivityService, JwtTokenProvider jwtTokenProvider) {
         this.employeeRepository = employeeRepository;
@@ -75,31 +88,70 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employee;
     }
 
-    public Employee updateEmployee(String employeeId, Employee employeeDetails) {
+    @Transactional
+    @Override
+    public Employee updateEmployee(String employeeId, Employee employeeDetails) throws IOException {
         Optional<Employee> employeeOptional = employeeRepository.findByEmployeeId(employeeId);
 
         if (!employeeOptional.isPresent()) {
-            return null;
+            throw new RuntimeException("Employee not found with ID: " + employeeId);
         }
 
         Employee employee = employeeOptional.get();
-        employee.setFirstName(employeeDetails.getFirstName());
-        employee.setLastName(employeeDetails.getLastName());
-        employee.setEmail(employeeDetails.getEmail());
-        employee.setPhoneNumber(employeeDetails.getPhoneNumber());
-        employee.setRole(employeeDetails.getRole());
-        employee.setJoinDate(employeeDetails.getJoinDate());
-        employee.setAadharCardNumber(employeeDetails.getAadharCardNumber());
-        employee.setBloodGroup(employeeDetails.getBloodGroup());
-        employee.setDob(employeeDetails.getDob());
-        employee.setDesignation(employeeDetails.getDesignation());
-        employee.setPersonalEmail(employeeDetails.getPersonalEmail());
-        employee.setEmployeeId(employeeDetails.getEmployeeId());
-        employee.setPanNumber(employeeDetails.getPanNumber());
+
+        // Update employee details with null checks
+        if (employeeDetails.getFirstName() != null) employee.setFirstName(employeeDetails.getFirstName());
+        if (employeeDetails.getLastName() != null) employee.setLastName(employeeDetails.getLastName());
+        if (employeeDetails.getBloodGroup() != null) employee.setBloodGroup(employeeDetails.getBloodGroup());
+        if (employeeDetails.getDesignation() != null) employee.setDesignation(employeeDetails.getDesignation());
+        if (employeeDetails.getAadharCardNumber() != null) employee.setAadharCardNumber(employeeDetails.getAadharCardNumber());
+        if (employeeDetails.getPanNumber() != null) employee.setPanNumber(employeeDetails.getPanNumber());
+        if (employeeDetails.getDob() != null) employee.setDob(employeeDetails.getDob());
+        if (employeeDetails.getPersonalEmail() != null) employee.setPersonalEmail(employeeDetails.getPersonalEmail());
+        if (employeeDetails.getPassword() != null) employee.setPassword(passwordEncoder.encode(employeeDetails.getPassword()));  // Assuming password encryption
+        if (employeeDetails.getEmail() != null) employee.setEmail(employeeDetails.getEmail());
+        if (employeeDetails.getPhoneNumber() != null) employee.setPhoneNumber(employeeDetails.getPhoneNumber());
+        if (employeeDetails.getJoinDate() != null) employee.setJoinDate(employeeDetails.getJoinDate());
+        if (employeeDetails.getRole() != null) employee.setRole(employeeDetails.getRole());
+        if (employeeDetails.getDrivingLicenseNumber() != null) employee.setDrivingLicenseNumber(employeeDetails.getDrivingLicenseNumber());
+        if (employeeDetails.getPassportNumber() != null) employee.setPassportNumber(employeeDetails.getPassportNumber());
+
+        // Check if AadharProof exists for the employee
+        List<AadharProof> aadharProofList = aadharProofRepository.findByEmployeeId(employeeId);
+
+        if (aadharProofList == null || aadharProofList.isEmpty()) {
+            // Create new AadharProof records if none exist
+            aadharProofService.createAadharDetails(AADHARCARD, employeeDetails.getAadharCardNumber(), employeeId);
+            aadharProofService.createAadharDetails(PANCARD, employeeDetails.getPanNumber(), employeeId);
+            aadharProofService.createAadharDetails(DRIVINGLICENSE, employeeDetails.getDrivingLicenseNumber(), employeeId);
+            aadharProofService.createAadharDetails(PASSPORT, employeeDetails.getPassportNumber(), employeeId);
+        } else {
+            // Update existing AadharProof records
+            List<AadharProof> updatedProofs = new ArrayList<>();
+            for (AadharProof aadharProof : aadharProofList) {
+                switch (aadharProof.getIdType()) {
+                    case AADHARCARD:
+                        aadharProof.setIdNumber(employeeDetails.getAadharCardNumber());
+                        break;
+                    case PANCARD:
+                        aadharProof.setIdNumber(employeeDetails.getPanNumber());
+                        break;
+                    case DRIVINGLICENSE:
+                        aadharProof.setIdNumber(employeeDetails.getDrivingLicenseNumber());
+                        break;
+                    case PASSPORT:
+                        aadharProof.setIdNumber(employeeDetails.getPassportNumber());
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown ID Type: " + aadharProof.getIdType());
+                }
+                updatedProofs.add(aadharProof);
+            }
+            aadharProofRepository.saveAll(updatedProofs);
+        }
 
         return employeeRepository.save(employee);
     }
-
     public boolean deleteEmployee(String employeeId) {
         Optional<Employee> employeeOptional = employeeRepository.findByEmployeeId(employeeId);
 

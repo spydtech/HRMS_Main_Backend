@@ -4,6 +4,7 @@ import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.PasswordChange;
 import jakarta.mail.MessagingException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface EmployeeService {
@@ -14,7 +15,7 @@ public interface EmployeeService {
      public List<Employee> getAllEmployees();
      Employee findEmployeeProfileByJwt(String jwt) throws Exception;
 
-    Employee updateEmployee(String employeeId, Employee employeeDetails);
+    Employee updateEmployee(String employeeId, Employee employeeDetails) throws IOException;
 
     boolean deleteEmployee(String employeeId);
 
