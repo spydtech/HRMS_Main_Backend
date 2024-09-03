@@ -1,5 +1,6 @@
 package com.SPYDTECH.HRMS;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,4 +24,10 @@ public class HrmsApplication implements CommandLineRunner {
 		System.out.println(this.passwordEncoder.encode("xyz"));
 
 	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
+
 }

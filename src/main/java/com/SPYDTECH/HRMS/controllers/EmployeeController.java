@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -118,7 +119,7 @@ public class EmployeeController {
 
     // Update employee by employeeId
     @PutMapping("/update/{employeeId}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable String employeeId, @RequestBody Employee employeeDetails) {
+    public ResponseEntity<Employee> updateEmployee(@PathVariable String employeeId, @RequestBody Employee employeeDetails) throws IOException {
         Employee updatedEmployee = employeeService.updateEmployee(employeeId, employeeDetails);
 
         if (updatedEmployee == null) {
