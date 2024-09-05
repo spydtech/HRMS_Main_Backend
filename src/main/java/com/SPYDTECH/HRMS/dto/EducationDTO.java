@@ -27,10 +27,10 @@ public class EducationDTO {
     @NotNull
     @NotEmpty
     @NotBlank
-    private int startYear;
+    private String startYear;
     @NotEmpty
     @NotBlank
-    private int endYear;
+    private String endYear;
 
 }
 

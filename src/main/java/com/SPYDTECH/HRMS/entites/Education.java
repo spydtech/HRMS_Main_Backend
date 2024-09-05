@@ -24,9 +24,9 @@ public class Education {
     private String institution;
     private String university;
     @Column(nullable = false)
-    private int startYear;
+    private String startYear;
     @Column(nullable = false)
-    private int endYear;
+    private String endYear;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
