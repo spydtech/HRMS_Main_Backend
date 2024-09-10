@@ -28,6 +28,7 @@ public class AadharProof {
     private String submitted;
 
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
 
     private String  employeeId;

@@ -13,4 +13,8 @@ public interface AadharProofRepository extends JpaRepository<AadharProof,Long> {
     Optional<AadharProof> findByIdType(IdType idType);
 
     Optional<AadharProof> findByEmployeeIdAndIdType(String employeeId, IdType idType);
+
+    void deleteByEmployeeId(String employeeId);
+
+    void deleteByEmployeeIdAndIdType(String employeeId, IdType idType);
 }

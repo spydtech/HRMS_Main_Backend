@@ -5,6 +5,7 @@ import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.IdType;
 import com.SPYDTECH.HRMS.repository.AadharProofRepository;
 import com.SPYDTECH.HRMS.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,5 +105,39 @@ public class AadharProofServiceImpl implements AadharProofService{
     public List<AadharProof> getAadharDetailsByEmployeeId(String employeeId) {
         List<AadharProof> aadharProof=aadharProofRepository.findByEmployeeId(employeeId);
         return aadharProof;
+    }
+
+    @Override
+    @Transactional
+    public String deleteProofs(String employeeId) {
+        aadharProofRepository.deleteByEmployeeId(employeeId);
+        Optional<Employee> employeeOptional=employeeRepository.findByEmployeeId(employeeId);
+        Employee employee=employeeOptional.get();
+        employee.setAadharCardNumber(null);
+        employee.setPanNumber(null);
+        employee.setDrivingLicenseNumber(null);
+        employee.setPassportNumber(null);
+        employeeRepository.save(employee);
+        return "deleted successfully";
+    }
+
+    @Override
+    @Transactional
+    public String deleteProofByEmployeeIdAndIdType(String employeeId, IdType idType) {
+        aadharProofRepository.deleteByEmployeeIdAndIdType(employeeId,idType);
+        Optional<Employee> employeeOptional= employeeRepository.findByEmployeeId(employeeId);
+        Employee employee1=employeeOptional.get();
+
+        if(idType.name().equals("AADHARCARD")){
+            employee1.setAadharCardNumber(null);
+        }else if(idType.name().equals("PANCARD")){
+            employee1.setPanNumber(null);
+        }else if(idType.name().equals("DRIVINGLICENSE")){
+            employee1.setDrivingLicenseNumber(null);
+        }else if(idType.name().equals("PASSPORT")){
+            employee1.setPassportNumber(null);
+        }
+        employeeRepository.save(employee1);
+        return "delete successfully"+" "+idType+" "+"with this "+employeeId;
     }
 }

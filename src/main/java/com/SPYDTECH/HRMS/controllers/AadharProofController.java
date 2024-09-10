@@ -4,6 +4,7 @@ import com.SPYDTECH.HRMS.entites.AadharProof;
 import com.SPYDTECH.HRMS.entites.IdType;
 import com.SPYDTECH.HRMS.service.AadharProofService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,5 +60,14 @@ public class AadharProofController {
     public ResponseEntity<List<AadharProof>> getAadharDetailsByEmployeeId(@PathVariable String employeeId) {
         List<AadharProof> aadharDetails = aadharProofService.getAadharDetailsByEmployeeId(employeeId);
         return ResponseEntity.ok(aadharDetails);
+    }
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<String> deleteByEmployeeId(@PathVariable String employeeId){
+        return new ResponseEntity<>(aadharProofService.deleteProofs(employeeId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{employeeId}/{idType}")
+    public ResponseEntity<String> deleteProofByEmployeeIdAndIdType(@PathVariable String employeeId, @PathVariable IdType idType){
+        return new ResponseEntity<>(aadharProofService.deleteProofByEmployeeIdAndIdType(employeeId,idType),HttpStatus.OK); 
     }
 }

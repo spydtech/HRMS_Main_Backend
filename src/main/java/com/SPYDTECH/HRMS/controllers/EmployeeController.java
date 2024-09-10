@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -199,6 +200,11 @@ public class EmployeeController {
         employeeRepository.save(existingEmployee);
 
         return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
+    }
+
+     @PutMapping("/upload")
+    public  ResponseEntity<String> uploadImageByEmployeeId(@RequestParam String employeeId, @RequestParam MultipartFile file) throws IOException {
+        return new ResponseEntity<>(employeeService.updateImage(employeeId,file),HttpStatus.ACCEPTED);
     }
 
 }
