@@ -3,6 +3,7 @@ package com.SPYDTECH.HRMS.service;
 import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.PasswordChange;
 import jakarta.mail.MessagingException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,4 +22,5 @@ public interface EmployeeService {
 
     public String updatePassword(String email, PasswordChange passwordChange);
 
+    String updateImage(String employeeId, MultipartFile file)throws IOException;
 }

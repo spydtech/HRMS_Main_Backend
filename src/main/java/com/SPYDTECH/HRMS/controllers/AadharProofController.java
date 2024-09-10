@@ -4,6 +4,7 @@ import com.SPYDTECH.HRMS.entites.AadharProof;
 import com.SPYDTECH.HRMS.entites.IdType;
 import com.SPYDTECH.HRMS.service.AadharProofService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

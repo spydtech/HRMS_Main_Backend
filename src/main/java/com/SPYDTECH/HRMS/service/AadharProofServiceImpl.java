@@ -5,6 +5,7 @@ import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.IdType;
 import com.SPYDTECH.HRMS.repository.AadharProofRepository;
 import com.SPYDTECH.HRMS.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,7 +108,7 @@ public class AadharProofServiceImpl implements AadharProofService{
         return aadharProof;
     }
 
-     @Override
+    @Override
     @Transactional
     public String deleteProofs(String employeeId) {
         aadharProofRepository.deleteByEmployeeId(employeeId);
