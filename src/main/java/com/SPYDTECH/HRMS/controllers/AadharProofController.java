@@ -18,29 +18,42 @@ public class AadharProofController {
     @Autowired
     private AadharProofService aadharProofService;
 
-    // Create Aadhar Details
     @PostMapping("/save")
     public ResponseEntity<AadharProof> createAadharDetails(
-            @RequestParam("idType") IdType idType,
+            @RequestParam("idType") String idTypeStr,
             @RequestParam("idNumber") String idNumber,
             @RequestParam("employeeId") String employeeId) throws IOException {
+
+        IdType idType;
+        try {
+            idType = IdType.valueOf(idTypeStr.toUpperCase()); // Convert string to enum
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Handle invalid enum value
+        }
+
         AadharProof aadharProof = aadharProofService.createAadharDetails(idType, idNumber, employeeId);
         return ResponseEntity.ok(aadharProof);
     }
 
-    // Update Aadhar Details
     @PutMapping("/update")
     public ResponseEntity<AadharProof> updateAadharDetails(
-            @RequestParam("idType") IdType idType,
+            @RequestParam("idType") String idTypeStr,
             @RequestParam("idNumber") String idNumber,
             @RequestParam("verified") String verified,
             @RequestParam("submitted") String submitted,
             @RequestParam("employeeId") String employeeId,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+
+        IdType idType;
+        try {
+            idType = IdType.valueOf(idTypeStr.toUpperCase()); // Convert string to enum
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Handle invalid enum value
+        }
+
         AadharProof updatedAadharProof = aadharProofService.updateAadharDetails(idType, idNumber, verified, submitted, employeeId, file);
         return ResponseEntity.ok(updatedAadharProof);
     }
-
 
     @GetMapping("/get/{employeeId}")
     public ResponseEntity<List<AadharProof>> getAadharDetailsByEmployeeId(@PathVariable String employeeId) {

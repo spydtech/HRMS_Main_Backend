@@ -115,6 +115,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (employeeDetails.getRole() != null) employee.setRole(employeeDetails.getRole());
         if (employeeDetails.getDrivingLicenseNumber() != null) employee.setDrivingLicenseNumber(employeeDetails.getDrivingLicenseNumber());
         if (employeeDetails.getPassportNumber() != null) employee.setPassportNumber(employeeDetails.getPassportNumber());
+        if (employeeDetails.getAlternatePhoneNumber() !=null) employee.setAlternatePhoneNumber(employeeDetails.getAlternatePhoneNumber());
 
         // Check if AadharProof exists for the employee
         List<AadharProof> aadharProofList = aadharProofRepository.findByEmployeeId(employeeId);

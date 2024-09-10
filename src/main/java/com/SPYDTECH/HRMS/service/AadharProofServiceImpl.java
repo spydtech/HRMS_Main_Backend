@@ -79,7 +79,6 @@ public class AadharProofServiceImpl implements AadharProofService{
         }
 
         aadharProof1.setImage(file.getBytes());
-
         aadharProof1.setSubmitted(submitted);
         aadharProof1.setEmployeeId(employeeId);
         aadharProof1.setVerified(verified);
