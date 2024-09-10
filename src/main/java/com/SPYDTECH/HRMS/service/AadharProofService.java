@@ -15,4 +15,8 @@ public interface AadharProofService {
             , String employeeId, MultipartFile file) throws IOException;
 
     List<AadharProof> getAadharDetailsByEmployeeId(String employeeId);
+
+    String deleteProofs(String employeeId);
+
+    String deleteProofByEmployeeIdAndIdType(String employeeId,IdType idType);
 }
