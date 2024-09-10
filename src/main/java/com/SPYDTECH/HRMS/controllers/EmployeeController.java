@@ -201,4 +201,9 @@ public class EmployeeController {
         return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
     }
 
+     @PutMapping("/upload")
+    public  ResponseEntity<String> uploadImageByEmployeeId(@RequestParam String employeeId, @RequestParam MultipartFile file) throws IOException {
+        return new ResponseEntity<>(employeeService.updateImage(employeeId,file),HttpStatus.ACCEPTED);
+    }
+
 }
