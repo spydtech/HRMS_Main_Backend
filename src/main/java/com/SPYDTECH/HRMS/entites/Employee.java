@@ -56,4 +56,8 @@ public class Employee {
 
     private String passportNumber;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image;
+
 }
