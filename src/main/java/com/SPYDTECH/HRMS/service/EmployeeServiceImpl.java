@@ -4,12 +4,19 @@ import com.SPYDTECH.HRMS.configuration.JwtTokenProvider;
 import com.SPYDTECH.HRMS.entites.AadharProof;
 import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.PasswordChange;
+import com.SPYDTECH.HRMS.exceptions.ErrorResponse;
 import com.SPYDTECH.HRMS.exceptions.UserException;
 import com.SPYDTECH.HRMS.repository.AadharProofRepository;
 import com.SPYDTECH.HRMS.repository.EmployeeRepository;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.SPYDTECH.HRMS.entites.IdType.*;
 import static com.SPYDTECH.HRMS.entites.IdType.PASSPORT;
@@ -27,6 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private JavaMailSender mailSender;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
