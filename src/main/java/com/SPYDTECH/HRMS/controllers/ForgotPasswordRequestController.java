@@ -6,8 +6,11 @@ import com.SPYDTECH.HRMS.entites.RequestStatus;
 import com.SPYDTECH.HRMS.service.ForgotPasswordRequestService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/request")
@@ -19,13 +22,13 @@ public class ForgotPasswordRequestController {
         return ResponseEntity.ok(forgotPasswordRequestService.forgetPassword(forgotPasswordRequestDto));
     }
 
-    @GetMapping("/get-all-request")
-    public ResponseEntity getAllRequest() throws MessagingException {
-        return ResponseEntity.ok(forgotPasswordRequestService.getAllRequest());
+    @GetMapping("/getAllRequests")
+    public ResponseEntity<List<ForgotPasswordRequest>> getAllEmployees(){
+        return new ResponseEntity<>(forgotPasswordRequestService.getAllRequest(), HttpStatus.OK);
     }
 
     @PutMapping("/status-change")
-    public ResponseEntity statusChange(@RequestParam String employeeId, @RequestParam RequestStatus requestStatus,@RequestParam String newPassword) throws MessagingException {
+    public ResponseEntity statusChange(@RequestParam String employeeId, @RequestParam RequestStatus requestStatus,@RequestParam(value = "newPassword", required = false) String newPassword) throws MessagingException {
         return ResponseEntity.ok(forgotPasswordRequestService.statusChange(employeeId,requestStatus,newPassword));
     }
 

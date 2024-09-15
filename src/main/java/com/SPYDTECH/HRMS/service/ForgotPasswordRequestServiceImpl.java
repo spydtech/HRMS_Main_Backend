@@ -45,6 +45,11 @@ public class ForgotPasswordRequestServiceImpl implements ForgotPasswordRequestSe
     }
 
     @Override
+    public List<ForgotPasswordRequest> getAllRequest() {
+        return forgotPasswordRequestRepository.findAll();
+    }
+
+    @Override
     public ResponseEntity statusChange(String employeeId,RequestStatus requestStatus, String newPassword) throws MessagingException {
         Optional<ForgotPasswordRequest> optional=forgotPasswordRequestRepository.findByEmployeeId(employeeId);
         if(optional.isPresent()){
@@ -52,7 +57,7 @@ public class ForgotPasswordRequestServiceImpl implements ForgotPasswordRequestSe
                 ForgotPasswordRequest forgotPasswordRequest = optional.get();
                 forgotPasswordRequest.setRequestStatus(requestStatus);
                 forgotPasswordRequestRepository.save(forgotPasswordRequest);
-               return confirmPasswordReset(forgotPasswordRequest.getEmployeeId(),newPassword);
+                return confirmPasswordReset(forgotPasswordRequest.getEmployeeId(),newPassword);
             }else{
                 ForgotPasswordRequest forgotPasswordRequest = optional.get();
                 forgotPasswordRequest.setRequestStatus(requestStatus);
@@ -95,9 +100,4 @@ public class ForgotPasswordRequestServiceImpl implements ForgotPasswordRequestSe
     }
 
 
-    @Override
-    public ResponseEntity getAllRequest() {
-        List<ForgotPasswordRequest> list=forgotPasswordRequestRepository.findAll();
-        return ResponseEntity.ok(list);
-    }
 }

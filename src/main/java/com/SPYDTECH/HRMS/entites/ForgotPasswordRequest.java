@@ -17,6 +17,8 @@ public class ForgotPasswordRequest {
     private String employeeName;
     private String employeeId;
     private String email;
+
+    private String newPassword;
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
