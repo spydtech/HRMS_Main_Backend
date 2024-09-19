@@ -40,8 +40,6 @@ public class AadharProofController {
     public ResponseEntity<AadharProof> updateAadharDetails(
             @RequestParam("idType") String idTypeStr,
             @RequestParam("idNumber") String idNumber,
-            @RequestParam("verified") String verified,
-            @RequestParam("submitted") String submitted,
             @RequestParam("employeeId") String employeeId,
             @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
 
@@ -52,7 +50,7 @@ public class AadharProofController {
             return ResponseEntity.badRequest().body(null); // Handle invalid enum value
         }
 
-        AadharProof updatedAadharProof = aadharProofService.updateAadharDetails(idType, idNumber, verified, submitted, employeeId, file);
+        AadharProof updatedAadharProof = aadharProofService.updateAadharDetails(idType, idNumber, employeeId, file);
         return ResponseEntity.ok(updatedAadharProof);
     }
 

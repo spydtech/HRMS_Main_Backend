@@ -11,7 +11,7 @@ public interface AadharProofService {
     AadharProof createAadharDetails(IdType idType, String idNumber
             , String employeeId/**, MultipartFile file**/) throws IOException;
 
-    AadharProof updateAadharDetails(IdType idType, String idNumber, String verified, String submitted
+    AadharProof updateAadharDetails(IdType idType, String idNumber
             , String employeeId, MultipartFile file) throws IOException;
 
     List<AadharProof> getAadharDetailsByEmployeeId(String employeeId);

@@ -64,7 +64,7 @@ public class AadharProofServiceImpl implements AadharProofService{
     }
 
     @Override
-    public AadharProof updateAadharDetails(IdType idType, String idNumber, String verified, String submitted
+    public AadharProof updateAadharDetails(IdType idType, String idNumber
             , String employeeId ,MultipartFile file) throws IOException {
         // Optional<AadharProof> aadharProofOptional=aadharProofRepository.findByEmployeeId(employeeId);
         Optional<AadharProof> aadharProofOptional=aadharProofRepository.findByIdType(idType);
@@ -80,9 +80,9 @@ public class AadharProofServiceImpl implements AadharProofService{
         }
 
         aadharProof1.setImage(file.getBytes());
-        aadharProof1.setSubmitted(submitted);
+
         aadharProof1.setEmployeeId(employeeId);
-        aadharProof1.setVerified(verified);
+
         aadharProof1.setIdType(idType);
         Optional<Employee> employeeOptional= employeeRepository.findByEmployeeId(employeeId);
         Employee employee1=employeeOptional.get();
