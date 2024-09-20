@@ -19,4 +19,6 @@ public class LeaveRequestDTO {
     private LocalDate endDate;
 
     private String leaveReason;
+
+    private String employeeId;
 }

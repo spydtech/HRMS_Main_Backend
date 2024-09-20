@@ -7,6 +7,7 @@ import com.SPYDTECH.HRMS.entites.LeaveRequest;
 import com.SPYDTECH.HRMS.entites.LeaveStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface LeaveRequestService {
@@ -24,5 +25,5 @@ public interface LeaveRequestService {
    List<LeaveRequest> getLeaveStatusByHr(String employeeId);
 
 
-    public LeaveRequest updateLeaveRequestByHR(String employeeId, int id, LeaveStatus leaveStatus);
+    public LeaveRequest updateLeaveRequestByHR(String employeeId, LocalDate fromDate, LeaveStatus leaveStatus);
 }

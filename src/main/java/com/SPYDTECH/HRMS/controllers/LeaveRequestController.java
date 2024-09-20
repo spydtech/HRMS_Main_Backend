@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -42,8 +43,8 @@ public class LeaveRequestController {
     }
 //Hr will update this end point
     @PutMapping("/updateLeaveStatus")
-    public ResponseEntity<LeaveRequest> updateLeaveRequestByHr(@RequestParam String employeeId, @RequestParam int id, @RequestParam LeaveStatus leaveStatus){
-        return new ResponseEntity<>(leaveRequestService.updateLeaveRequestByHR(employeeId, id, leaveStatus), HttpStatus.OK);
+    public ResponseEntity<LeaveRequest> updateLeaveRequestByHr(@RequestParam String employeeId, @RequestParam LocalDate fromDate, @RequestParam LeaveStatus leaveStatus){
+        return new ResponseEntity<>(leaveRequestService.updateLeaveRequestByHR(employeeId, fromDate, leaveStatus), HttpStatus.OK);
     }
 
     @PostMapping("/leave")
