@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Table(name ="all_employee")
+@Table(name = "all_employee")
 public class Employee {
 
     @Id
@@ -23,7 +23,7 @@ public class Employee {
     private String firstName;
     private String lastName;
 
-//    @Column(name = "employee_id")
+    //    @Column(name = "employee_id")
     private String employeeId;
     private String aadharCardNumber;
     private String panNumber;

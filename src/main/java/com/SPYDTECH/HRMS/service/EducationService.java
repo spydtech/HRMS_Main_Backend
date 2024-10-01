@@ -12,6 +12,8 @@ public interface EducationService {
     boolean deleteEducation(String jwtToken);
 
     EducationDTO fetchEducation(String jwtToken);
+
+
 }
 
 

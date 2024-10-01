@@ -3,19 +3,22 @@ package com.SPYDTECH.HRMS.service;
 import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.PasswordChange;
 import jakarta.mail.MessagingException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface EmployeeService {
-    String createUserId(Employee employees) throws MessagingException;
-     void logInEmployee(Employee employees);
 
-     void logOutEmployee(String email);
-     public List<Employee> getAllEmployees();
-     Employee findEmployeeProfileByJwt(String jwt) throws Exception;
+    String createUserId(Employee employees) throws MessagingException;
+
+    void logInEmployee(Employee employees);
+
+    void logOutEmployee(String email);
+
+    public List<Employee> getAllEmployees();
+
+    Employee findEmployeeProfileByJwt(String jwt) throws Exception;
 
     Employee updateEmployee(String employeeId, Employee employeeDetails) throws IOException;
 
@@ -23,8 +26,8 @@ public interface EmployeeService {
 
     public String updatePassword(String email, PasswordChange passwordChange);
 
-    String updateImage(String employeeId, MultipartFile file)throws IOException;
+    String updateImage(String employeeId, MultipartFile file) throws IOException;
 
-
+    List<String> getLastNamesByRole(String role);
 
 }

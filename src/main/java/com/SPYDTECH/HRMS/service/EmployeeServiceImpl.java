@@ -4,19 +4,13 @@ import com.SPYDTECH.HRMS.configuration.JwtTokenProvider;
 import com.SPYDTECH.HRMS.entites.AadharProof;
 import com.SPYDTECH.HRMS.entites.Employee;
 import com.SPYDTECH.HRMS.entites.PasswordChange;
-import com.SPYDTECH.HRMS.exceptions.ErrorResponse;
 import com.SPYDTECH.HRMS.exceptions.UserException;
 import com.SPYDTECH.HRMS.repository.AadharProofRepository;
 import com.SPYDTECH.HRMS.repository.EmployeeRepository;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,13 +19,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.SPYDTECH.HRMS.entites.IdType.*;
 import static com.SPYDTECH.HRMS.entites.IdType.PASSPORT;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -60,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public String createUserId(Employee employees) throws MessagingException {
-        if(employeeRepository.existsByEmail(employees.getEmail())){
+        if (employeeRepository.existsByEmail(employees.getEmail())) {
             return "Email is already registered.";
         }
 
@@ -68,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         employees.setPassword(passwordEncoder.encode(password));
 
         employeeRepository.save(employees);
-        emailService.sendEmployeeIdAndPassword(employees.getEmail(),employees.getEmployeeId(),password);
+        emailService.sendEmployeeIdAndPassword(employees.getEmail(), employees.getEmployeeId(), password);
 
         return "EmployeeId and password are sent successfully";
     }
@@ -93,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee findEmployeeProfileByJwt(String jwt) throws Exception {
         String email = jwtTokenProvider.getEmailFromJwtToken(jwt);
         Employee employee = employeeRepository.findByEmail(email);
-        if(employee == null){
+        if (employee == null) {
             throw new UserException("Employee not exist with email" + email);
         }
         return employee;
@@ -115,18 +108,23 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (employeeDetails.getLastName() != null) employee.setLastName(employeeDetails.getLastName());
         if (employeeDetails.getBloodGroup() != null) employee.setBloodGroup(employeeDetails.getBloodGroup());
         if (employeeDetails.getDesignation() != null) employee.setDesignation(employeeDetails.getDesignation());
-        if (employeeDetails.getAadharCardNumber() != null) employee.setAadharCardNumber(employeeDetails.getAadharCardNumber());
+        if (employeeDetails.getAadharCardNumber() != null)
+            employee.setAadharCardNumber(employeeDetails.getAadharCardNumber());
         if (employeeDetails.getPanNumber() != null) employee.setPanNumber(employeeDetails.getPanNumber());
         if (employeeDetails.getDob() != null) employee.setDob(employeeDetails.getDob());
         if (employeeDetails.getPersonalEmail() != null) employee.setPersonalEmail(employeeDetails.getPersonalEmail());
-        if (employeeDetails.getPassword() != null) employee.setPassword(passwordEncoder.encode(employeeDetails.getPassword()));  // Assuming password encryption
+        if (employeeDetails.getPassword() != null)
+            employee.setPassword(passwordEncoder.encode(employeeDetails.getPassword()));  // Assuming password encryption
         if (employeeDetails.getEmail() != null) employee.setEmail(employeeDetails.getEmail());
         if (employeeDetails.getPhoneNumber() != null) employee.setPhoneNumber(employeeDetails.getPhoneNumber());
         if (employeeDetails.getJoinDate() != null) employee.setJoinDate(employeeDetails.getJoinDate());
         if (employeeDetails.getRole() != null) employee.setRole(employeeDetails.getRole());
-        if (employeeDetails.getDrivingLicenseNumber() != null) employee.setDrivingLicenseNumber(employeeDetails.getDrivingLicenseNumber());
-        if (employeeDetails.getPassportNumber() != null) employee.setPassportNumber(employeeDetails.getPassportNumber());
-        if (employeeDetails.getAlternatePhoneNumber() !=null) employee.setAlternatePhoneNumber(employeeDetails.getAlternatePhoneNumber());
+        if (employeeDetails.getDrivingLicenseNumber() != null)
+            employee.setDrivingLicenseNumber(employeeDetails.getDrivingLicenseNumber());
+        if (employeeDetails.getPassportNumber() != null)
+            employee.setPassportNumber(employeeDetails.getPassportNumber());
+        if (employeeDetails.getAlternatePhoneNumber() != null)
+            employee.setAlternatePhoneNumber(employeeDetails.getAlternatePhoneNumber());
 
         // Check if AadharProof exists for the employee
         List<AadharProof> aadharProofList = aadharProofRepository.findByEmployeeId(employeeId);
@@ -164,6 +162,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         return employeeRepository.save(employee);
     }
+
     public boolean deleteEmployee(String employeeId) {
         Optional<Employee> employeeOptional = employeeRepository.findByEmployeeId(employeeId);
 
@@ -176,24 +175,24 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
 
-    public String updatePassword(String email, PasswordChange passwordChange){
-        Optional<Employee> employee= Optional.ofNullable(employeeRepository.findByEmail(email));
-        if(employee.isPresent()){
-            Employee employee1=employee.get();
-            if(passwordChange.getNewPassword().equals(passwordChange.getConfirmPassword())){
-                if(passwordEncoder.matches(passwordChange.getCurrentPassword(), employee1.getPassword())){
+    public String updatePassword(String email, PasswordChange passwordChange) {
+        Optional<Employee> employee = Optional.ofNullable(employeeRepository.findByEmail(email));
+        if (employee.isPresent()) {
+            Employee employee1 = employee.get();
+            if (passwordChange.getNewPassword().equals(passwordChange.getConfirmPassword())) {
+                if (passwordEncoder.matches(passwordChange.getCurrentPassword(), employee1.getPassword())) {
                     employee1.setPassword(passwordEncoder.encode(passwordChange.getNewPassword()));
                     employeeRepository.save(employee1);
                     return "password updated successfully";
-                }else{
+                } else {
                     return "password not matches with the old password";
                 }
 
-            }else{
+            } else {
                 return "new Password and confirm Password are not equal";
             }
 
-        }else{
+        } else {
             return "user is not found";
         }
 
@@ -202,11 +201,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public String updateImage(String employeeId, MultipartFile file) throws IOException {
-        Optional<Employee> employeeOptional=employeeRepository.findByEmployeeId(employeeId);
-        Employee employee=employeeOptional.get();
+        Optional<Employee> employeeOptional = employeeRepository.findByEmployeeId(employeeId);
+        Employee employee = employeeOptional.get();
         employee.setImage(file.getBytes());
         employeeRepository.save(employee);
         return "uploaded successfully";
     }
+
+    @Override
+    public List<String> getLastNamesByRole(String role) {
+        List<String> lastNames = employeeRepository.findLastNamesByRole(role);
+        return lastNames;
+    }
+
 
 }

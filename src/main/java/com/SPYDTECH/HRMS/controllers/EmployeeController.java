@@ -76,25 +76,25 @@ public class EmployeeController {
         String username = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
-        System.out.println(username +" ----- "+password);
+        System.out.println(username + " ----- " + password);
 
         Authentication authentication = authenticate(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
         String token = jwtTokenProvider.generateToken(authentication);
-        AuthResponse authResponse= new AuthResponse();
+        AuthResponse authResponse = new AuthResponse();
 
         authResponse.setStatus(true);
         authResponse.setJwt(token);
 
-        return new ResponseEntity<AuthResponse>(authResponse,HttpStatus.OK);
+        return new ResponseEntity<AuthResponse>(authResponse, HttpStatus.OK);
     }
 
     private Authentication authenticate(String username, String password) {
         UserDetails userDetails = customEmployeeDetails.loadUserByUsername(username);
 
-        System.out.println("sign in userDetails - "+userDetails);
+        System.out.println("sign in userDetails - " + userDetails);
 
         if (userDetails == null) {
             System.out.println("sign in userDetails - null " + userDetails);
@@ -114,9 +114,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/getAllEmployee")
-    public ResponseEntity<List<Employee>> getAllEmployees(){
-        return new ResponseEntity<>(employeeService.getAllEmployees(),HttpStatus.OK);
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
     }
+
 
     // Update employee by employeeId
     @PutMapping("/update/{employeeId}")
@@ -143,8 +144,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/password/{email}")
-    public ResponseEntity<String> updatePassword(@PathVariable String email,@RequestBody PasswordChange passwordChange){
-        return new ResponseEntity<>(employeeService.updatePassword(email,passwordChange),HttpStatus.CREATED);
+    public ResponseEntity<String> updatePassword(@PathVariable String email, @RequestBody PasswordChange passwordChange) {
+        return new ResponseEntity<>(employeeService.updatePassword(email, passwordChange), HttpStatus.CREATED);
     }
 
     @PostMapping("/forget")
@@ -165,10 +166,6 @@ public class EmployeeController {
             return ResponseEntity.badRequest().body("You entered invalid email.");
         }
     }
-
-
-
-
 
 
     @PostMapping("/validating-otp")
@@ -207,9 +204,24 @@ public class EmployeeController {
         return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
     }
 
-     @PutMapping("/upload")
-    public  ResponseEntity<String> uploadImageByEmployeeId(@RequestParam String employeeId, @RequestParam MultipartFile file) throws IOException {
-        return new ResponseEntity<>(employeeService.updateImage(employeeId,file),HttpStatus.ACCEPTED);
+    @PutMapping("/upload")
+    public ResponseEntity<String> uploadImageByEmployeeId(@RequestParam String employeeId, @RequestParam MultipartFile file) throws IOException {
+        return new ResponseEntity<>(employeeService.updateImage(employeeId, file), HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("departmentHead/{role}")
+    public ResponseEntity<?> getLastNamesByRole(@PathVariable("role") String role) {
+        try {
+            List<String> lastNames = employeeService.getLastNamesByRole(role);
+            if (lastNames.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No employees found with the role: " + role);
+            }
+            return ResponseEntity.ok(lastNames);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+
 
 }
